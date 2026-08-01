@@ -22,13 +22,29 @@ function nameKey(name) {
   return name.trim().toLowerCase();
 }
 
+// Fisher-Yates shuffle of a question's option positions, remapping
+// correctIndex to match. The seed data clusters correct answers at index 1,
+// so without this the correct color/shape would be predictable every round.
+function shuffleOptions(question) {
+  const order = [0, 1, 2, 3];
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  return {
+    ...question,
+    options: order.map((i) => question.options[i]),
+    correctIndex: order.indexOf(question.correctIndex),
+  };
+}
+
 export function createRoom(questions) {
   const code = generateRoomCode();
   const room = {
     code,
     status: "lobby", // lobby | in_progress | reveal | finished
     currentQuestionIndex: -1,
-    questions,
+    questions: questions.map(shuffleOptions),
     players: new Map(), // playerId -> Player
     currentQuestion: null, // runtime state for the active question
     createdAt: Date.now(),
