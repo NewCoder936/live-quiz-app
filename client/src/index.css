@@ -1,0 +1,131 @@
+:root {
+  --gold: #B8962E;
+  --gold-dark: #8f7222;
+  --bg: #ffffff;
+  --text: #1a1a1a;
+  --text-muted: #6b6b6b;
+  --border: #e5e5e5;
+
+  --opt-red: #e21b3c;
+  --opt-blue: #1368ce;
+  --opt-yellow: #d89e00;
+  --opt-green: #26890c;
+
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  font-family: inherit;
+}
+
+.app-shell {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  background: var(--gold);
+  color: white;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  text-align: center;
+  gap: 1.25rem;
+}
+
+.btn {
+  border: none;
+  border-radius: 12px;
+  padding: 0.9rem 1.75rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.08s ease, opacity 0.15s ease;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--gold);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--gold-dark);
+}
+
+.btn-secondary {
+  background: #f2f2f2;
+  color: var(--text);
+}
+
+input[type="text"] {
+  font-size: 1.1rem;
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  border: 2px solid var(--border);
+  width: 100%;
+  max-width: 320px;
+  text-align: center;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+.room-code {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+.error-banner {
+  background: #fde8e8;
+  color: #a10a1f;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+}
