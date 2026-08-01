@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { socket } from "../../socket";
+import { socket, emitWithAck } from "../../socket";
 import JoinForm from "./JoinForm";
 import PlayerWaiting from "./PlayerWaiting";
 import PlayerQuestion from "./PlayerQuestion";
@@ -23,32 +23,31 @@ export default function JoinApp() {
 
   const identityRef = useRef(null);
 
-  const joinRoom = ({ code, name }) => {
+  const joinRoom = async ({ code, name }) => {
     setError(null);
-    socket.emit("player:join", { code, name }, (res) => {
-      if (!res?.ok) {
-        setError(res?.error || "Could not join room");
-        return;
-      }
-      const nextIdentity = { code, name, playerId: res.playerId };
-      identityRef.current = nextIdentity;
-      setIdentity(nextIdentity);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(nextIdentity));
+    const res = await emitWithAck("player:join", { code, name });
+    if (!res?.ok) {
+      setError(res?.error || "Could not join room");
+      return;
+    }
+    const nextIdentity = { code, name, playerId: res.playerId };
+    identityRef.current = nextIdentity;
+    setIdentity(nextIdentity);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(nextIdentity));
 
-      if (res.room.status === "finished") {
-        setFinalSummary(res.finalResult || null);
-        setPhase("final");
-      } else if (res.activeQuestion) {
-        const { question, timeLimitMs, remainingMs, alreadyAnswered } = res.activeQuestion;
-        setActiveQuestion({ question, timeLimitMs });
-        setRemainingMs(remainingMs);
-        setLocked(alreadyAnswered);
-        setSelectedIndex(null);
-        setPhase("question");
-      } else {
-        setPhase("waiting");
-      }
-    });
+    if (res.room.status === "finished") {
+      setFinalSummary(res.finalResult || null);
+      setPhase("final");
+    } else if (res.activeQuestion) {
+      const { question, timeLimitMs, remainingMs, alreadyAnswered } = res.activeQuestion;
+      setActiveQuestion({ question, timeLimitMs });
+      setRemainingMs(remainingMs);
+      setLocked(alreadyAnswered);
+      setSelectedIndex(null);
+      setPhase("question");
+    } else {
+      setPhase("waiting");
+    }
   };
 
   useEffect(() => {
@@ -82,6 +81,7 @@ export default function JoinApp() {
       setSelectedIndex(null);
       setLocked(false);
       setResult(null);
+      setError(null);
       setPhase("question");
     };
     const onTimerTick = ({ remainingMs }) => setRemainingMs(remainingMs);
@@ -93,11 +93,20 @@ export default function JoinApp() {
       setFinalSummary(summary);
       setPhase("final");
     };
-    const onConnect = () => {
-      if (identityRef.current) {
-        const { code, name } = identityRef.current;
-        socket.emit("player:join", { code, name }, () => {});
-      }
+    const onConnect = async () => {
+      if (!identityRef.current) return;
+      const { code, name } = identityRef.current;
+      const res = await emitWithAck("player:join", { code, name });
+      if (res?.ok) return;
+      // The room is gone (server restarted and lost all in-memory state,
+      // e.g. a redeploy or the free hosting tier spinning down after
+      // idling) — there's nothing to resume, so send the player back to
+      // the join form instead of leaving them stuck on a dead screen.
+      identityRef.current = null;
+      localStorage.removeItem(STORAGE_KEY);
+      setIdentity(null);
+      setError(res?.error === "Room not found" ? "This quiz session ended. Please rejoin with the new room code." : res?.error || "Lost connection to the quiz.");
+      setPhase("form");
     };
 
     socket.on("question:start", onQuestionStart);
@@ -115,15 +124,19 @@ export default function JoinApp() {
     };
   }, []);
 
-  const submitAnswer = (index) => {
+  const submitAnswer = async (index) => {
     if (locked || !identity) return;
     setSelectedIndex(index);
     setLocked(true);
-    socket.emit("player:answer", { code: identity.code, playerId: identity.playerId, selectedIndex: index }, (res) => {
-      if (!res?.ok) {
-        setError(res?.error || "Could not submit answer");
-      }
-    });
+    const res = await emitWithAck("player:answer", { code: identity.code, playerId: identity.playerId, selectedIndex: index });
+    if (!res?.ok) {
+      // Unlock so they can retry — otherwise a lost/timed-out submission
+      // leaves them stuck staring at "Answer locked in!" with no recourse
+      // and no answer actually recorded.
+      setLocked(false);
+      setSelectedIndex(null);
+      setError(res?.error || "Could not submit answer, please try again");
+    }
   };
 
   if (phase === "form") {
@@ -136,14 +149,24 @@ export default function JoinApp() {
 
   if (phase === "question" && activeQuestion) {
     return (
-      <PlayerQuestion
-        question={activeQuestion.question}
-        timeLimitMs={activeQuestion.timeLimitMs}
-        remainingMs={remainingMs}
-        selectedIndex={selectedIndex}
-        locked={locked}
-        onAnswer={submitAnswer}
-      />
+      <>
+        {error && (
+          <div
+            className="error-banner"
+            style={{ position: "fixed", top: "1rem", left: "50%", transform: "translateX(-50%)", zIndex: 10 }}
+          >
+            {error}
+          </div>
+        )}
+        <PlayerQuestion
+          question={activeQuestion.question}
+          timeLimitMs={activeQuestion.timeLimitMs}
+          remainingMs={remainingMs}
+          selectedIndex={selectedIndex}
+          locked={locked}
+          onAnswer={submitAnswer}
+        />
+      </>
     );
   }
 

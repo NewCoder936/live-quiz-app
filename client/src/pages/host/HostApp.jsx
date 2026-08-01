@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { socket } from "../../socket";
+import { socket, emitWithAck } from "../../socket";
 import HostLobby from "./HostLobby";
 import HostQuestion from "./HostQuestion";
 import HostReveal from "./HostReveal";
@@ -66,7 +66,7 @@ export default function HostApp() {
   useEffect(() => {
     const savedCode = localStorage.getItem(STORAGE_KEY);
     if (!savedCode) return;
-    socket.emit("host:watch_room", { code: savedCode }, (res) => {
+    emitWithAck("host:watch_room", { code: savedCode }).then((res) => {
       if (!res?.ok) {
         localStorage.removeItem(STORAGE_KEY);
         return;
@@ -90,36 +90,47 @@ export default function HostApp() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const createQuiz = () => {
+  const createQuiz = async () => {
     setError(null);
-    socket.emit("host:create_room", {}, (res) => {
-      if (!res?.ok) return setError(res?.error || "Could not create quiz");
-      applyRoomSnapshot(res.room);
-      setPhase("lobby");
-    });
+    const res = await emitWithAck("host:create_room", {});
+    if (!res?.ok) return setError(res?.error || "Could not create quiz");
+    applyRoomSnapshot(res.room);
+    setPhase("lobby");
   };
 
-  const startQuiz = () => {
-    setError(null);
-    socket.emit("host:start_quiz", { code }, (res) => {
-      if (!res?.ok) setError(res?.error || "Could not start quiz");
-    });
-  };
-
-  const nextQuestion = () => {
-    socket.emit("host:next_question", { code });
-  };
-
-  const newQuiz = () => {
+  // A missing room means the server restarted (e.g. redeploy, or the free
+  // hosting tier spinning down after idling) and lost all in-memory state —
+  // there's no session to recover, so send the host back to start a new one
+  // instead of leaving them stuck on a screen that silently does nothing.
+  const handleRoomGone = (res) => {
+    if (res?.error !== "Room not found") return false;
     localStorage.removeItem(STORAGE_KEY);
-    socket.emit("host:new_quiz", {}, (res) => {
-      if (!res?.ok) return setError(res?.error || "Could not create quiz");
-      applyRoomSnapshot(res.room);
-      setActiveQuestion(null);
-      setReveal(null);
-      setFinalLeaderboard([]);
-      setPhase("lobby");
-    });
+    setPhase("create");
+    setError("This quiz session ended (the server restarted). Please create a new quiz.");
+    return true;
+  };
+
+  const startQuiz = async () => {
+    setError(null);
+    const res = await emitWithAck("host:start_quiz", { code });
+    if (!res?.ok && !handleRoomGone(res)) setError(res?.error || "Could not start quiz");
+  };
+
+  const nextQuestion = async () => {
+    setError(null);
+    const res = await emitWithAck("host:next_question", { code });
+    if (!res?.ok) handleRoomGone(res) || setError(res?.error || "Could not advance to the next question");
+  };
+
+  const newQuiz = async () => {
+    localStorage.removeItem(STORAGE_KEY);
+    const res = await emitWithAck("host:new_quiz", {});
+    if (!res?.ok) return setError(res?.error || "Could not create quiz");
+    applyRoomSnapshot(res.room);
+    setActiveQuestion(null);
+    setReveal(null);
+    setFinalLeaderboard([]);
+    setPhase("lobby");
   };
 
   if (phase === "create") {
@@ -135,22 +146,40 @@ export default function HostApp() {
     );
   }
 
+  // Timeouts/errors can now surface from any screen (e.g. clicking "Next
+  // Question" during a connection blip), not just the ones that already
+  // render {error} inline — so float it on top instead of wiring it through
+  // every child component.
+  const errorToast = error && phase !== "create" && phase !== "lobby" && (
+    <div className="error-banner" style={{ position: "fixed", top: "1rem", left: "50%", transform: "translateX(-50%)", zIndex: 10 }}>
+      {error}
+    </div>
+  );
+
   if (phase === "lobby") {
     return <HostLobby code={code} players={players} totalQuestions={totalQuestions} error={error} onStart={startQuiz} />;
   }
 
   if (phase === "question" && activeQuestion) {
-    return <HostQuestion activeQuestion={activeQuestion} remainingMs={remainingMs} progress={progress} />;
+    return (
+      <>
+        {errorToast}
+        <HostQuestion activeQuestion={activeQuestion} remainingMs={remainingMs} progress={progress} />
+      </>
+    );
   }
 
   if (phase === "reveal" && reveal) {
     return (
-      <HostReveal
-        reveal={reveal}
-        questionIndex={activeQuestion?.index ?? 0}
-        totalQuestions={activeQuestion?.total ?? totalQuestions}
-        onNext={nextQuestion}
-      />
+      <>
+        {errorToast}
+        <HostReveal
+          reveal={reveal}
+          questionIndex={activeQuestion?.index ?? 0}
+          totalQuestions={activeQuestion?.total ?? totalQuestions}
+          onNext={nextQuestion}
+        />
+      </>
     );
   }
 
