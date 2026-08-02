@@ -23,6 +23,25 @@ export default function JoinApp() {
 
   const identityRef = useRef(null);
 
+  const applyJoinResult = (res) => {
+    if (res.room.status === "finished") {
+      setFinalSummary(res.finalResult || null);
+      setPhase("final");
+    } else if (res.activeQuestion) {
+      const { question, timeLimitMs, remainingMs, alreadyAnswered } = res.activeQuestion;
+      setActiveQuestion({ question, timeLimitMs });
+      setRemainingMs(remainingMs);
+      setLocked(alreadyAnswered);
+      setSelectedIndex(null);
+      setPhase("question");
+    } else if (res.room.status === "reveal") {
+      setResult(res.reveal || null);
+      setPhase("reveal");
+    } else {
+      setPhase("waiting");
+    }
+  };
+
   const joinRoom = async ({ code, name }) => {
     setError(null);
     const res = await emitWithAck("player:join", { code, name });
@@ -34,20 +53,7 @@ export default function JoinApp() {
     identityRef.current = nextIdentity;
     setIdentity(nextIdentity);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(nextIdentity));
-
-    if (res.room.status === "finished") {
-      setFinalSummary(res.finalResult || null);
-      setPhase("final");
-    } else if (res.activeQuestion) {
-      const { question, timeLimitMs, remainingMs, alreadyAnswered } = res.activeQuestion;
-      setActiveQuestion({ question, timeLimitMs });
-      setRemainingMs(remainingMs);
-      setLocked(alreadyAnswered);
-      setSelectedIndex(null);
-      setPhase("question");
-    } else {
-      setPhase("waiting");
-    }
+    applyJoinResult(res);
   };
 
   useEffect(() => {
@@ -97,7 +103,13 @@ export default function JoinApp() {
       if (!identityRef.current) return;
       const { code, name } = identityRef.current;
       const res = await emitWithAck("player:join", { code, name });
-      if (res?.ok) return;
+      if (res?.ok) {
+        // Re-sync to whatever the server says is true now — e.g. a
+        // question started/ended while this player's connection was
+        // dropped, so the screen they were on before may be stale.
+        applyJoinResult(res);
+        return;
+      }
       // The room is gone (server restarted and lost all in-memory state,
       // e.g. a redeploy or the free hosting tier spinning down after
       // idling) — there's nothing to resume, so send the player back to

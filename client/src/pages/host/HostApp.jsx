@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { socket, emitWithAck } from "../../socket";
 import HostLobby from "./HostLobby";
 import HostQuestion from "./HostQuestion";
@@ -19,6 +19,48 @@ export default function HostApp() {
   const [finalLeaderboard, setFinalLeaderboard] = useState([]);
   const [error, setError] = useState(null);
 
+  // The socket.io "room" membership that broadcasts (question:start,
+  // question:end, etc.) rely on is tied to the underlying connection, not
+  // to this component's lifetime. If the socket ever drops and reconnects
+  // (a brief network blip, a tab left idle) it gets a fresh connection with
+  // no room membership — so it must explicitly rejoin every time, not just
+  // once on mount, or the host silently stops receiving updates: their
+  // click still succeeds (the ack comes back fine) but the resulting
+  // broadcast never arrives, so the screen just sits there.
+  const codeRef = useRef(null);
+
+  const applyRoomSnapshot = useCallback((room) => {
+    codeRef.current = room.code;
+    setCode(room.code);
+    setPlayers(room.players);
+    setTotalQuestions(room.totalQuestions);
+    localStorage.setItem(STORAGE_KEY, room.code);
+  }, []);
+
+  const applyWatchRoomResult = useCallback(
+    (res) => {
+      if (!res?.ok) return false;
+      applyRoomSnapshot(res.room);
+      if (res.room.status === "finished") {
+        setFinalLeaderboard(res.finalLeaderboard || []);
+        setPhase("final");
+      } else if (res.activeQuestion) {
+        const { index, total, question, timeLimitMs, remainingMs, answeredCount } = res.activeQuestion;
+        setActiveQuestion({ index, total, question, timeLimitMs });
+        setRemainingMs(remainingMs);
+        setProgress({ answeredCount, totalPlayers: res.room.players.length });
+        setPhase("question");
+      } else if (res.room.status === "reveal") {
+        setReveal(res.reveal || null);
+        setPhase("reveal");
+      } else {
+        setPhase("lobby");
+      }
+      return true;
+    },
+    [applyRoomSnapshot]
+  );
+
   useEffect(() => {
     const onLobbyUpdate = ({ players }) => setPlayers(players);
     const onQuestionStart = ({ index, total, question, timeLimitMs }) => {
@@ -38,6 +80,13 @@ export default function HostApp() {
       setFinalLeaderboard(leaderboard);
       setPhase("final");
     };
+    const onConnect = () => {
+      if (!codeRef.current) return;
+      emitWithAck("host:watch_room", { code: codeRef.current }).then((res) => {
+        if (!res?.ok) return; // handled by the next user action via handleRoomGone
+        applyWatchRoomResult(res);
+      });
+    };
 
     socket.on("room:lobby_update", onLobbyUpdate);
     socket.on("question:start", onQuestionStart);
@@ -45,6 +94,7 @@ export default function HostApp() {
     socket.on("answer:progress", onAnswerProgress);
     socket.on("question:end", onQuestionEnd);
     socket.on("quiz:finished", onQuizFinished);
+    socket.on("connect", onConnect);
 
     return () => {
       socket.off("room:lobby_update", onLobbyUpdate);
@@ -53,39 +103,21 @@ export default function HostApp() {
       socket.off("answer:progress", onAnswerProgress);
       socket.off("question:end", onQuestionEnd);
       socket.off("quiz:finished", onQuizFinished);
+      socket.off("connect", onConnect);
     };
-  }, []);
-
-  const applyRoomSnapshot = useCallback((room) => {
-    setCode(room.code);
-    setPlayers(room.players);
-    setTotalQuestions(room.totalQuestions);
-    localStorage.setItem(STORAGE_KEY, room.code);
-  }, []);
+  }, [applyWatchRoomResult]);
 
   useEffect(() => {
     const savedCode = localStorage.getItem(STORAGE_KEY);
     if (!savedCode) return;
+    codeRef.current = savedCode;
     emitWithAck("host:watch_room", { code: savedCode }).then((res) => {
       if (!res?.ok) {
         localStorage.removeItem(STORAGE_KEY);
+        codeRef.current = null;
         return;
       }
-      applyRoomSnapshot(res.room);
-      if (res.room.status === "finished") {
-        setFinalLeaderboard(res.finalLeaderboard || []);
-        setPhase("final");
-      } else if (res.activeQuestion) {
-        const { index, total, question, timeLimitMs, remainingMs, answeredCount } = res.activeQuestion;
-        setActiveQuestion({ index, total, question, timeLimitMs });
-        setRemainingMs(remainingMs);
-        setProgress({ answeredCount, totalPlayers: res.room.players.length });
-        setPhase("question");
-      } else if (res.room.status === "reveal") {
-        setPhase("reveal");
-      } else {
-        setPhase("lobby");
-      }
+      applyWatchRoomResult(res);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

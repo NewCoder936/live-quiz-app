@@ -95,6 +95,7 @@ function finishQuestion(room) {
   if (!room.currentQuestion || room.currentQuestion.ended) return;
   clearRoomTimers(room.code);
   const reveal = endQuestion(room);
+  room.lastReveal = reveal; // so a host who reconnects mid-reveal can restore this screen
   io.to(room.code).emit("question:end", reveal);
 
   for (const player of room.players.values()) {
@@ -152,6 +153,9 @@ io.on("connection", (socket) => {
         answeredCount: answeredCount(room),
       };
     }
+    if (room.status === "reveal") {
+      payload.reveal = room.lastReveal;
+    }
     if (room.status === "finished") {
       payload.finalLeaderboard = getLeaderboard(room);
     }
@@ -186,6 +190,17 @@ io.on("connection", (socket) => {
         question: publicQuestion(q),
         remainingMs,
         alreadyAnswered: player.answers.has(q.id),
+      };
+    } else if (room.status === "reveal") {
+      const q = currentQuestionDef(room);
+      const answer = q ? player.answers.get(q.id) : undefined;
+      const summary = playerAnswerSummary(room, player.id);
+      payload.reveal = {
+        correct: answer ? answer.correct : false,
+        points: answer ? answer.points : 0,
+        score: summary.score,
+        rank: summary.rank,
+        totalPlayers: room.players.size,
       };
     } else if (room.status === "finished") {
       const summary = playerAnswerSummary(room, player.id);
