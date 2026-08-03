@@ -1,10 +1,11 @@
-// Kahoot-standard red/blue/yellow/green, each paired with a distinct shape
-// so answers stay distinguishable for colorblind players too.
+// All four options share the same light gold color; shape is the only
+// visual differentiator (also keeps them distinguishable for colorblind
+// players).
 export const OPTION_META = [
-  { letter: "A", color: "var(--opt-red)", shape: "triangle" },
-  { letter: "B", color: "var(--opt-blue)", shape: "diamond" },
-  { letter: "C", color: "var(--opt-yellow)", shape: "circle" },
-  { letter: "D", color: "var(--opt-green)", shape: "square" },
+  { letter: "A", color: "var(--opt-gold)", shape: "triangle" },
+  { letter: "B", color: "var(--opt-gold)", shape: "diamond" },
+  { letter: "C", color: "var(--opt-gold)", shape: "circle" },
+  { letter: "D", color: "var(--opt-gold)", shape: "square" },
 ];
 
 export function Shape({ shape, size = 22, color = "white" }) {
