@@ -1,362 +1,362 @@
 [
   {
     "id": 1,
-    "text": "A buyer wants 100% freehold title to land AND building with zero residency restriction - the strongest position in the whole benchmark. Which island do you show them first?",
+    "text": "When will Rixos Al Reem Residences be handed over?",
     "options": [
-      "Al Jubail",
-      "Hudayriyat",
-      "Al Reem",
-      "Al Maryah"
+      "Q3 2027",
+      "Q1 2028",
+      "Q3 2029",
+      "Q4 2030"
+    ],
+    "correctIndex": 2,
+    "timeLimitSeconds": 20
+  },
+  {
+    "id": 2,
+    "text": "What is the starting price for a unit (in AED)?",
+    "options": [
+      "AED 1,315,388",
+      "AED 2,115,388",
+      "AED 2,615,388",
+      "AED 3,115,388"
     ],
     "correctIndex": 1,
     "timeLimitSeconds": 20
   },
   {
-    "id": 2,
-    "text": "An island posts the weakest apartment yield in Abu Dhabi at roughly 3.5% - yet its price still climbed over 20% YoY. Which island is this?",
-    "options": [
-      "Saadiyat",
-      "Al Raha Beach",
-      "Yas",
-      "Al Maryah"
-    ],
-    "correctIndex": 0,
-    "timeLimitSeconds": 20
-  },
-  {
     "id": 3,
-    "text": "Villa prices on one island jumped 40% YoY - the single strongest capital growth figure on the entire islands chart. Name it.",
+    "text": "What is the payment plan for this project?",
     "options": [
-      "Saadiyat",
-      "Al Raha Beach",
-      "Al Jubail",
-      "Hudayriyat"
+      "50/50",
+      "60/40",
+      "40/60",
+      "30/70"
     ],
     "correctIndex": 2,
     "timeLimitSeconds": 20
   },
   {
     "id": 4,
-    "text": "A colleague tells a client 'Al Maryah is freehold across the board, same as Al Reem.' What's wrong with that statement?",
+    "text": "Who is building (developing) Rixos Al Reem Residences?",
     "options": [
-      "Al Maryah isn't freehold at all",
-      "Al Reem is the one that varies, not Al Maryah",
-      "Nothing, it's accurate",
-      "Al Maryah ownership varies building-by-building and must be verified per deal"
+      "Aldar Properties",
+      "East & West Properties (EWP)",
+      "Emaar Properties",
+      "Bassam Harati Real Estate"
     ],
-    "correctIndex": 3,
+    "correctIndex": 1,
     "timeLimitSeconds": 20
   },
   {
     "id": 5,
-    "text": "Which island should never appear in your listings because expat freehold has never actually been established there?",
+    "text": "Who runs the Rixos hotel brand?",
     "options": [
-      "Lulu Island",
-      "Nurai",
-      "Fahid",
-      "Ramhan"
+      "Marriott International",
+      "Rixos Hotels - an Accor brand",
+      "IHG Hotels & Resorts",
+      "Ennismore"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "timeLimitSeconds": 20
   },
   {
     "id": 6,
-    "text": "On one island, apartments rose 18% YoY while villas on the SAME island fell 22% - a full decoupling of the two segments. Which island?",
+    "text": "Which company gives the project its lifestyle/hospitality feel?",
     "options": [
-      "Al Maryah",
-      "Saadiyat",
-      "Yas",
-      "Al Reem"
+      "Soho House",
+      "Ennismore collective",
+      "The Bureau collective",
+      "Rixos Hotels only"
     ],
-    "correctIndex": 3,
+    "correctIndex": 1,
     "timeLimitSeconds": 20
   },
   {
     "id": 7,
-    "text": "A buyer specifically wants an apartment off-plan unit and you check one island's project table - there isn't a single apartment listed, only villas and townhouses. Which island's table is this?",
+    "text": "Who designed the building (the architect)?",
     "options": [
-      "Al Jubail",
-      "Yas",
-      "Al Reem",
-      "Hudayriyat"
+      "Foster + Partners",
+      "Aedas",
+      "HBA Residential",
+      "Zaha Hadid Architects"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "timeLimitSeconds": 20
   },
   {
     "id": 8,
-    "text": "The Mansions at Bada Al Jubail is a 110-unit ultra-prime scheme. Roughly what price band does it start in?",
+    "text": "Who designed the inside of the homes (the interiors)?",
     "options": [
-      "AED 35-65m",
-      "AED 20-30m",
-      "AED 8-15m",
-      "AED 60-90m"
+      "Aedas",
+      "HBA Residential",
+      "Ennismore",
+      "East & West Properties"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "timeLimitSeconds": 20
   },
   {
     "id": 9,
-    "text": "Beyond the golf course itself, what additional community amenity is planned inside the Hudayriyat Golf Estates masterplan?",
+    "text": "What type of ownership do buyers get, and where is it registered?",
     "options": [
-      "A school",
-      "A marina",
-      "A hospital",
-      "A metro stop"
+      "Leasehold, Dubai Land Department",
+      "Freehold, ADGM",
+      "Freehold, Abu Dhabi Municipality",
+      "Leasehold, ADGM"
     ],
-    "correctIndex": 0,
+    "correctIndex": 1,
     "timeLimitSeconds": 20
   },
   {
     "id": 10,
-    "text": "A client wants to buy raw land on Hudayriyat and build their own home. Which project should you point them to?",
+    "text": "How many total homes (units) are in the project?",
     "options": [
-      "Nawayef Village",
-      "Al Naseem Villas",
-      "Wadeem",
-      "Bashayer Residences"
+      "286",
+      "386",
+      "486",
+      "586"
     ],
-    "correctIndex": 2,
+    "correctIndex": 1,
     "timeLimitSeconds": 20
   },
   {
     "id": 11,
-    "text": "If a buyer insists on a villa specifically on Al Reem Island, how many project options does the table actually give you?",
+    "text": "How far is Al Reem Island from mainland Abu Dhabi?",
     "options": [
-      "Three",
-      "Two - but both are Reem Hills phases",
-      "Five",
-      "None - Al Reem is apartment-only"
+      "200 metres",
+      "600 metres",
+      "1.2 kilometres",
+      "2 kilometres"
     ],
     "correctIndex": 1,
     "timeLimitSeconds": 20
   },
   {
     "id": 12,
-    "text": "Comparing the service-charge chart, which of these islands is the cheapest to own on a recurring-cost basis?",
+    "text": "About how long does it take to reach Downtown Abu Dhabi?",
     "options": [
-      "Yas apartments",
-      "Hudayriyat",
-      "Al Reef",
-      "Al Reem"
+      "~5 minutes",
+      "~10 minutes",
+      "~20 minutes",
+      "~30 minutes"
+    ],
+    "correctIndex": 1,
+    "timeLimitSeconds": 20
+  },
+  {
+    "id": 13,
+    "text": "About how long does it take to reach Yas Island and the airport?",
+    "options": [
+      "10-14 minutes",
+      "15-20 minutes",
+      "30-32 minutes",
+      "45-50 minutes"
     ],
     "correctIndex": 2,
     "timeLimitSeconds": 20
   },
   {
-    "id": 13,
-    "text": "A client is worried about ongoing service charges eating their net yield. Which island's band tops out the highest on the chart, up to AED 45/sqft?",
-    "options": [
-      "Al Reem",
-      "Al Maryah",
-      "Hudayriyat",
-      "Saadiyat"
-    ],
-    "correctIndex": 0,
-    "timeLimitSeconds": 20
-  },
-  {
     "id": 14,
-    "text": "A buyer wants the cheapest possible way into ADGM-jurisdiction freehold - any project, any island. What do you quote them?",
+    "text": "Which school is only 5-7 minutes away?",
     "options": [
-      "Vista 3",
-      "Radiant Garden Towers",
-      "Lea at Yas Acres",
-      "Rotana Residences studios"
+      "Cranleigh Abu Dhabi",
+      "Repton School",
+      "GEMS World Academy",
+      "Brighton College"
     ],
     "correctIndex": 1,
     "timeLimitSeconds": 20
   },
   {
     "id": 15,
-    "text": "Excluding non-branded product entirely, what's the single cheapest branded residence entry point anywhere in the emirate?",
+    "text": "Which hospital/clinic is 10 minutes away (on Al Maryah Island)?",
     "options": [
-      "W Residences",
-      "Elie Saab Waterfront",
-      "Rotana Residences studios",
-      "Rixos Al Reem"
+      "Burjeel Medical City",
+      "Cleveland Clinic",
+      "Mediclinic",
+      "NMC Royal Hospital"
+    ],
+    "correctIndex": 1,
+    "timeLimitSeconds": 20
+  },
+  {
+    "id": 16,
+    "text": "How many amenities (facilities/services) does the project have in total?",
+    "options": [
+      "20+",
+      "25+",
+      "30+",
+      "40+"
     ],
     "correctIndex": 2,
     "timeLimitSeconds": 20
   },
   {
-    "id": 16,
-    "text": "The doc explicitly flags one branded scheme as underpriced relative to the market's typical branded premium - a genuine value play. Which one?",
-    "options": [
-      "St. Regis The Residences",
-      "Nobu Residences",
-      "W Residences",
-      "Rixos Al Reem"
-    ],
-    "correctIndex": 3,
-    "timeLimitSeconds": 20
-  },
-  {
     "id": 17,
-    "text": "Only 88 units exist across Nobu Residences on Saadiyat - meaning genuine primary-market stock is nearly gone. What does that imply for a buyer today?",
+    "text": "What is the name of the cafe inside the project?",
     "options": [
-      "They're first in line at launch pricing",
-      "They're buying at assignment-level pricing, likely a resale/secondary premium",
-      "The project was cancelled",
-      "Units are still widely available at list price"
+      "Rixos Lounge",
+      "Coffee & Co.",
+      "Cafe Rixos",
+      "The Social House"
     ],
     "correctIndex": 1,
     "timeLimitSeconds": 20
   },
   {
     "id": 18,
-    "text": "Comparing pipeline size only, Fahid carries roughly 3,550 units under construction. How does that stack up against Saadiyat's pipeline?",
+    "text": "What is the kids' club called?",
     "options": [
-      "Saadiyat has no pipeline at all",
-      "Fahid's is larger",
-      "They're identical",
-      "Fahid's is smaller"
+      "Rixy Kids Club",
+      "Rixos Juniors",
+      "KidZania Reem",
+      "Little Rixos"
     ],
-    "correctIndex": 1,
+    "correctIndex": 0,
     "timeLimitSeconds": 20
   },
   {
     "id": 19,
-    "text": "A prospect mentions they work for an ADGM-licensed financial firm. What's the FIRST thing you should bring up in the pitch?",
+    "text": "How many one-bedroom units are there?",
     "options": [
-      "Their preferred build finish level",
-      "Whether they want a branded residence",
-      "ADGM growth data, commute time, common-law title, and the rent-freeze exemption",
-      "Which school district they prefer"
+      "128",
+      "140",
+      "172",
+      "386"
     ],
     "correctIndex": 2,
     "timeLimitSeconds": 20
   },
   {
     "id": 20,
-    "text": "Ignoring the Modon/ADIB special financing arrangement, what's the regulatory ceiling on off-plan LTV across Abu Dhabi generally?",
+    "text": "What size range does a Two-Bedroom Apartment come in?",
     "options": [
-      "60%",
-      "70%",
-      "50%",
-      "40%"
-    ],
-    "correctIndex": 2,
-    "timeLimitSeconds": 20
-  },
-  {
-    "id": 21,
-    "text": "From the Sobha Yas Island landmark map, what is the drive time/distance to CLYMB Yas Island?",
-    "options": [
-      "18min (15km)",
-      "16min (13km)",
-      "15min (13km)",
-      "13min (11km)"
+      "954-1,076 sq ft",
+      "1,479-1,645 sq ft",
+      "1,769-1,904 sq ft",
+      "1,947-1,951 sq ft"
     ],
     "correctIndex": 1,
     "timeLimitSeconds": 20
   },
   {
-    "id": 22,
-    "text": "If a client's budget for an Al Jubail villa starts at roughly AED 3.6m, which entry tier are they looking at?",
+    "id": 21,
+    "text": "How many Four-Bedroom Apartments are there?",
     "options": [
-      "Rolling villa phases",
-      "Golf Estates",
-      "The delivered villages",
-      "Bada Al Jubail mansions"
+      "6",
+      "12",
+      "16",
+      "52"
     ],
     "correctIndex": 0,
     "timeLimitSeconds": 20
   },
   {
-    "id": 23,
-    "text": "Sobha Abu Dhabi's payment plan is structured as Down Payment / During Construction / On Handover. Which split matches the actual plan?",
+    "id": 22,
+    "text": "What is the starting price for a Three-Bedroom Loft (in AED)?",
     "options": [
-      "10% / 30% / 60%",
-      "15% / 45% / 40%",
-      "20% / 40% / 40%",
-      "20% / 50% / 30%"
+      "AED 4,131,000",
+      "AED 4,233,010",
+      "AED 5,762,136",
+      "AED 6,766,990"
     ],
     "correctIndex": 2,
+    "timeLimitSeconds": 20
+  },
+  {
+    "id": 23,
+    "text": "How did Al Reem Island perform in Abu Dhabi in H1 2025?",
+    "options": [
+      "It was the second-best selling area",
+      "It was the top-selling area",
+      "It only had strong rentals",
+      "It had very little activity"
+    ],
+    "correctIndex": 1,
     "timeLimitSeconds": 20
   },
   {
     "id": 24,
-    "text": "A client with a serious health condition wants to be close to top-tier hospital care. Which island's on-site hospital do you mention?",
+    "text": "How much did prices on Al Reem Island grow year-on-year?",
     "options": [
-      "Al Reem",
-      "Al Maryah - Cleveland Clinic",
-      "Saadiyat",
-      "Yas"
+      "+18%",
+      "+28%",
+      "+38%",
+      "+48%"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "timeLimitSeconds": 20
   },
   {
     "id": 25,
-    "text": "A UHNW buyer wants a private island, but you have to tell them the developer has already sold out and access is boat-only. Which island are you describing?",
+    "text": "What registration fee is charged when transferring the property (via ADGM)?",
     "options": [
-      "Al Jubail",
-      "Nurai",
-      "Ramhan",
-      "Hudayriyat"
+      "1%",
+      "2%",
+      "4%",
+      "5%"
     ],
-    "correctIndex": 2,
+    "correctIndex": 1,
     "timeLimitSeconds": 20
   },
   {
     "id": 26,
-    "text": "Al Reef advertises the lowest service charge of any freehold community in Abu Dhabi. What figure does the doc actually give?",
+    "text": "How much do you need to spend to qualify for the UAE Golden Visa?",
     "options": [
-      "AED 25/sqft",
-      "AED 14/sqft",
-      "AED 10/sqft",
-      "AED 18/sqft"
+      "AED 1,200,000",
+      "AED 2,000,000",
+      "AED 3,000,000",
+      "AED 4,000,000"
+    ],
+    "correctIndex": 1,
+    "timeLimitSeconds": 20
+  },
+  {
+    "id": 27,
+    "text": "How many different nationalities bought property in Abu Dhabi in 2025?",
+    "options": [
+      "50+",
+      "75+",
+      "100+",
+      "150+"
     ],
     "correctIndex": 2,
     "timeLimitSeconds": 20
   },
   {
-    "id": 27,
-    "text": "If pure rental yield is a client's only priority, which island tops the entire apartment yield comparison?",
-    "options": [
-      "Al Maryah",
-      "Al Reef",
-      "Saadiyat",
-      "Yas"
-    ],
-    "correctIndex": 1,
-    "timeLimitSeconds": 20
-  },
-  {
     "id": 28,
-    "text": "A family needs schools, healthcare and retail that ALREADY work today, not in 2028. Which island is singled out as the only fully functioning family community?",
+    "text": "What share of 2025 foreign investment went into zones like Al Reem?",
     "options": [
-      "Yas",
-      "Al Raha Beach",
-      "Hudayriyat",
-      "Al Jubail"
+      "52%",
+      "62%",
+      "72%",
+      "82%"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "timeLimitSeconds": 20
   },
   {
     "id": 29,
-    "text": "If you had to flag ONE island to a colleague as carrying the single biggest oversupply risk in the whole benchmark, which would it be?",
+    "text": "What membership level do owners get with Accor ALL?",
     "options": [
-      "Al Reem",
-      "Fahid",
-      "Yas",
-      "Saadiyat"
+      "Gold",
+      "Platinum",
+      "Diamond",
+      "Silver"
     ],
     "correctIndex": 2,
     "timeLimitSeconds": 20
   },
   {
     "id": 30,
-    "text": "From the Sobha Yas Island landmark map, roughly how far is Ferrari World?",
+    "text": "What discount do owners get on hotel rates worldwide through Accor ALL?",
     "options": [
-      "18min (15km)",
-      "15min (13km)",
-      "13min (11km)",
-      "16min (13km)"
+      "10%",
+      "15%",
+      "20%",
+      "25%"
     ],
-    "correctIndex": 1,
+    "correctIndex": 2,
     "timeLimitSeconds": 20
   }
 ]
